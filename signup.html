@@ -1,21 +1,249 @@
-<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Sign Up — E-Learn</title><link rel='stylesheet' href='style.css'></head><body>
-<header class="header"><div class="brand"><img src="images/logo.png" alt="logo" width="200" height="90"/></div><nav><a href="index.html">Home</a><a href="courses.html">Courses</a><a href="dashboard.html">My Space</a><a href="forum.html">Forum</a><a href="support.html">Support</a></nav></header>
-<main class="container"><div class="grid">
-  <section class="card maincol" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
-    <div style="flex:1;min-width:320px">
-      <h2>Create your account</h2>
-      <p class="small">Sign up to track progress, join discussions and earn certificates.</p>
-      <div style="margin-top:12px" class="card">
-        <div class="form-row"><input class="input" placeholder="Full name"></div>
-        <div class="form-row" style="margin-top:8px"><input class="input" placeholder="Email address"></div>
-        <div class="form-row" style="margin-top:8px"><input class="input" placeholder="Password" type="password"></div>
-        <div style="margin-top:12px"><button class="btn">Create account</button> <button class="btn-ghost">Sign up with Google</button></div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign Up — E-Learn</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Minimal styles to show validation feedback */
+    .input { padding:10px; width:100%; box-sizing:border-box; border:1px solid #ccc; border-radius:6px;}
+    .input.invalid { border-color:#d9534f; }
+    .input.valid { border-color:#5cb85c; }
+    .error { color:#d9534f; font-size:13px; margin-top:6px; display:none; }
+    .error.active { display:block; }
+    .success { color:#2e7d32; font-size:14px; margin-top:12px; display:none; }
+    .btn { padding:10px 16px; border-radius:8px; cursor:pointer; border:none; background:#007bff; color:#fff; }
+    .btn:hover { filter:brightness(.95); }
+    .btn-ghost { padding:10px 16px; border-radius:8px; cursor:pointer; background:transparent; border:1px solid #ccc; }
+    .btn-ghost.hovered { box-shadow:0 2px 8px rgba(0,0,0,.12); }
+    .meta { font-size:12px; color:#666; margin-top:8px; }
+    .mouse-coords { font-size:12px; color:#444; margin-top:8px; }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="brand"><img src="images/logo.png" alt="logo" width="200" height="90"/></div>
+  <nav>
+    <a href="index.html">Home</a><a href="courses.html">Courses</a><a href="dashboard.html">My Space</a><a href="forum.html">Forum</a><a href="support.html">Support</a>
+  </nav>
+</header>
+
+<main class="container">
+  <div class="grid">
+    <section class="card maincol" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+      <div style="flex:1;min-width:320px">
+        <h2>Create your account</h2>
+        <p class="small">Sign up to track progress, join discussions and earn certificates.</p>
+
+        <!-- FORM START -->
+        <div style="margin-top:12px" class="card">
+          <form id="signupForm" novalidate>
+            <div class="form-row">
+              <label for="fullname" class="meta">Full name</label>
+              <input id="fullname" name="fullname" class="input" placeholder="Full name" autocomplete="name" required aria-describedby="fullname-err">
+              <div id="fullname-err" class="error" aria-live="polite">Please enter your full name (min 2 characters).</div>
+            </div>
+
+            <div class="form-row" style="margin-top:8px">
+              <label for="email" class="meta">Email address</label>
+              <input id="email" name="email" class="input" placeholder="Email address" type="email" autocomplete="email" required aria-describedby="email-err"
+                     pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$">
+              <div id="email-err" class="error" aria-live="polite">Please enter a valid email address.</div>
+            </div>
+
+            <div class="form-row" style="margin-top:8px">
+              <label for="password" class="meta">Password</label>
+              <input id="password" name="password" class="input" placeholder="Password" type="password" autocomplete="new-password" required aria-describedby="password-err">
+              <div id="password-err" class="error" aria-live="polite">
+                Password must be at least 8 characters and include a number.
+              </div>
+              <div class="meta">Tip: Use at least 8 characters with letters and numbers.</div>
+            </div>
+
+            <div style="margin-top:12px">
+              <button id="createBtn" class="btn" type="submit" aria-disabled="true">Create account</button>
+              <button id="googleBtn" class="btn-ghost" type="button">Sign up with Google</button>
+            </div>
+
+            <div id="formSuccess" class="success" role="status" aria-live="polite">Your account looks good — form ready to submit.</div>
+            <div id="formError" class="error" role="alert" aria-live="assertive">Please fix the errors above before submitting.</div>
+
+          </form>
+        </div>
+        <!-- FORM END -->
+
       </div>
-    </div>
-    <aside style="width:420px" class="card">
-      <img src="https://images.pexels.com/photos/3719037/pexels-photo-3719037.jpeg" style="width:100%;border-radius:10px;object-fit:cover">
-      <h3 style="margin-top:12px">Join a community of learners</h3>
-      <p class="small">Access resources, projects and mentorship to boost your skills.</p>
-    </aside>
-  </section>
-</div></main><footer class="footer">© 2025 E-Learn</footer></body></html>
+
+      <aside style="width:420px" class="card" id="asideCard">
+        <img src="https://images.pexels.com/photos/3719037/pexels-photo-3719037.jpeg" style="width:100%;border-radius:10px;object-fit:cover" alt="learn">
+        <h3 style="margin-top:12px">Join a community of learners</h3>
+        <p class="small">Access resources, projects and mentorship to boost your skills.</p>
+
+        <!-- Mouse coordinates demo -->
+        <!--<div class="mouse-coords" id="mouseCoords">Move your mouse over this card to see coordinates.</div>-->
+      </aside>
+
+    </section>
+  </div>
+</main>
+
+<footer class="footer">© 2025 E-Learn</footer>
+
+<script>
+/* --- Validation + events for signup form --- */
+(function() {
+  const form = document.getElementById('signupForm');
+  const fullname = document.getElementById('fullname');
+  const email = document.getElementById('email');
+  const password = document.getElementById('password');
+  const createBtn = document.getElementById('createBtn');
+  const googleBtn = document.getElementById('googleBtn');
+  const formSuccess = document.getElementById('formSuccess');
+  const formError = document.getElementById('formError');
+
+  // Utility validators
+  function validateFullname() {
+    const v = fullname.value.trim();
+    const valid = v.length >= 2;
+    setValidationState(fullname, valid);
+    toggleError('fullname-err', !valid);
+    return valid;
+  }
+
+  function validateEmail() {
+    const v = email.value.trim();
+    // simple email regex (also enforced with input pattern)
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const valid = re.test(v);
+    setValidationState(email, valid);
+    toggleError('email-err', !valid);
+    return valid;
+  }
+
+  function validatePassword() {
+    const v = password.value;
+    // at least 8 chars and at least one digit
+    const valid = v.length >= 8 && /[0-9]/.test(v);
+    setValidationState(password, valid);
+    toggleError('password-err', !valid);
+    return valid;
+  }
+
+  function setValidationState(el, isValid) {
+    el.classList.toggle('valid', isValid);
+    el.classList.toggle('invalid', !isValid);
+  }
+
+  function toggleError(id, show) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle('active', show);
+  }
+
+  // Enable/disable submit and show meta messages
+  function refreshFormState() {
+    const allValid = validateFullname() & validateEmail() & validatePassword();
+    // Use bitwise & to force execution of all validators above (so all errors show)
+    const valid = Boolean(allValid);
+    createBtn.disabled = !valid;
+    createBtn.setAttribute('aria-disabled', (!valid).toString());
+    formSuccess.style.display = valid ? 'block' : 'none';
+    formError.style.display = valid ? 'none' : 'none'; // hide form-level error unless submit attempted
+    return valid;
+  }
+
+  // Event listeners: real-time validation
+  fullname.addEventListener('input', refreshFormState);
+  email.addEventListener('input', refreshFormState);
+  password.addEventListener('input', refreshFormState);
+
+  // Focus / blur: give a subtle UX
+  [fullname, email, password].forEach(el => {
+    el.addEventListener('focus', (e) => {
+      e.target.style.boxShadow = '0 0 0 3px rgba(0,123,255,0.08)';
+    });
+    el.addEventListener('blur', (e) => {
+      e.target.style.boxShadow = 'none';
+      // validate on blur to provide feedback
+      if (e.target === fullname) validateFullname();
+      if (e.target === email) validateEmail();
+      if (e.target === password) validatePassword();
+    });
+  });
+
+  // Submit handler
+  form.addEventListener('submit', function(evt) {
+    evt.preventDefault();
+    const ok = refreshFormState();
+    if (!ok) {
+      formError.textContent = 'Please fix the errors above before submitting.';
+      formError.style.display = 'block';
+      formError.focus();
+      return;
+    }
+
+    // Example: fake submit flow (replace with real submission)
+    createBtn.disabled = true;
+    createBtn.textContent = 'Creating...';
+    setTimeout(() => {
+      createBtn.textContent = 'Create account';
+      createBtn.disabled = false;
+      form.reset();
+      // reset visuals
+      [fullname, email, password].forEach(i => { i.classList.remove('valid','invalid'); });
+      formSuccess.textContent = 'Account created successfully (demo). Redirecting...';
+      formSuccess.style.display = 'block';
+      // In real app: redirect or call backend API here
+    }, 800);
+  });
+
+  // Keyboard: pressing Enter in any input submits if valid
+  [fullname, email, password].forEach(input => {
+    input.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        // allow form submit to run
+        // no preventDefault here; the form submit handler will validate
+      }
+    });
+  });
+
+  // Google button click demo (show a toast / console log in demo)
+  googleBtn.addEventListener('click', function() {
+    // In production, trigger OAuth flow
+    alert('Google sign up clicked — trigger OAuth flow here.');
+  });
+
+  // Mouse events on google button to demonstrate hover tone
+  googleBtn.addEventListener('mouseover', () => googleBtn.classList.add('hovered'));
+  googleBtn.addEventListener('mouseout', () => googleBtn.classList.remove('hovered'));
+  googleBtn.addEventListener('mousedown', () => googleBtn.style.transform = 'scale(.98)');
+  googleBtn.addEventListener('mouseup', () => googleBtn.style.transform = '');
+
+  // Mouse events for aside card (simple demo)
+  const asideCard = document.getElementById('asideCard');
+  const coords = document.getElementById('mouseCoords');
+  asideCard.addEventListener('mousemove', (e) => {
+    const rect = asideCard.getBoundingClientRect();
+    const x = Math.round(e.clientX - rect.left);
+    const y = Math.round(e.clientY - rect.top);
+    coords.textContent = `Mouse inside card — x: ${x}, y: ${y}`;
+  });
+  asideCard.addEventListener('mouseenter', () => {
+    asideCard.style.transform = 'translateY(-3px)';
+    asideCard.style.transition = 'transform .12s ease';
+  });
+  asideCard.addEventListener('mouseleave', () => {
+    asideCard.style.transform = '';
+    coords.textContent = 'Move your mouse over this card to see coordinates.';
+  });
+
+  // Initial state
+  refreshFormState();
+
+  // Expose validate function for debugging (optional)
+  window._signupValidate = refreshFormState;
+})();
+</script>
+</body>
+</html>

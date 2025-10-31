@@ -1,61 +1,458 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>E-Learn — Home</title><link rel="stylesheet" href="style.css"></head><body>
-<header class="header"><div class="brand"><img src="images/logo.png" alt="logo" width="200" height="90"/></div><nav><a href="index.html">Home</a><a href="courses.html">Courses</a><a href="dashboard.html">My Space</a><a href="forum.html">Forum</a><a href="support.html">Support</a></nav></header>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>E-Learn — Home</title>
+<link href="style.css" rel="stylesheet"/>
+<!-- Popup modal styles (add to your stylesheet if preferred) -->
+<style>
+    /* Modal backdrop */
+    .el-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 24, 48, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 24px;
+    }
+
+    .el-modal {
+      width: 100%;
+      max-width: 760px;
+      background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+      border-radius: 14px;
+      box-shadow: 0 30px 60px rgba(6, 40, 80, 0.18);
+      display: flex;
+      gap: 18px;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    .el-modal .left {
+      padding: 28px;
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .el-modal .right {
+      padding: 24px;
+      width: 320px;
+      background: linear-gradient(180deg, #0b63d6 0%, #0557b6 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .el-modal h3 {
+      margin: 0 0 8px 0;
+      font-size: 20px;
+      color: #073763;
+    }
+
+    .el-modal p.lead {
+      margin: 0 0 16px 0;
+      color: #4a616f;
+      font-size: 14px;
+    }
+
+    .el-formsmall {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .el-formsmall input[type="email"],
+    .el-formsmall input[type="password"],
+    .el-formsmall input[type="text"] {
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #d6e6fb;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .el-formsmall input:focus {
+      box-shadow: 0 0 0 4px rgba(11,99,214,0.08);
+      border-color: #0b63d6;
+    }
+
+    .el-btn {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: linear-gradient(90deg,#0b63d6,#0472ef);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .el-btn.secondary {
+      background: transparent;
+      color: #0b63d6;
+      border: 1px solid rgba(11,99,214,0.14);
+    }
+
+    .el-small {
+      font-size: 13px;
+      color: #647d8a;
+    }
+
+    .el-error {
+      color: #b12727;
+      font-size: 12px;
+    }
+
+    .el-modal .close-x {
+		position: absolute;
+		right: 392px;
+		/* left: 300px; */
+		/* top: 16px; */
+		background: transparent;
+		border: none;
+		color: white;
+		font-size: 30px;
+		cursor: pointer;
+    }
+
+    .el-right-cta {
+      text-align: center;
+      max-width: 270px;
+    }
+
+    .el-dontshow {
+      display:flex;
+      gap:8px;
+      align-items:center;
+      font-size:13px;
+      margin-top:8px;
+      color:#3a4f63;
+    }
+
+    /* show the modal (toggle by js) */
+    .el-modal-backdrop.show { display:flex; }
+
+    @media (max-width:720px){
+      .el-modal { flex-direction: column; width: 100%; max-width: 420px; }
+      .el-modal .right { width: 100%; padding: 18px; }
+    }
+  </style>
+
+<style>
+/* -----------------------------
+   Hover zoom / lift effects
+   ----------------------------- */
+
+/* Apply transitions to grid cards, nested course-cards and list items */
+.grid .card,
+.featured .course-card,
+.grid .card .card,
+.list-item,
+.sidebar .badge,
+.featured .course-card img {
+  transition: transform 280ms cubic-bezier(.2,.9,.3,1),
+              box-shadow 280ms cubic-bezier(.2,.9,.3,1);
+  will-change: transform;
+  transform-origin: center;
+}
+
+/* Lift + scale effect for container cards and tiles */
+.grid .card:hover,
+.featured .course-card:hover,
+.grid .card .card:hover,
+.list-item:hover,
+.sidebar .badge:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(6, 40, 80, 0.12);
+  z-index: 2;
+  cursor: pointer;
+}
+
+/* Slight image zoom for course thumbnails (keeps images crisp) */
+.featured .course-card img {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  transition: transform 320ms cubic-bezier(.2,.9,.3,1), box-shadow 320ms;
+}
+
+.featured .course-card:hover img {
+  transform: scale(1.06);
+}
+
+/* Add keyboard focus support for accessibility */
+.grid .card:focus-within,
+.featured .course-card:focus-within,
+.grid .card .card:focus-within,
+.list-item:focus-within {
+  outline: none;
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(6, 40, 80, 0.12);
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .grid .card,
+  .featured .course-card,
+  .grid .card .card,
+  .list-item,
+  .sidebar .badge,
+  .featured .course-card img {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
+</style>
+</head>
+<body>
+<header class="header"><div class="brand"><img alt="logo" height="90" src="images/logo.png" width="200"/></div><nav><a href="index.html">Home</a><a href="courses.html">Courses</a><a href="dashboard.html">My Space</a><a href="forum.html">Forum</a><a href="support.html">Support</a></nav></header>
 <main class="container"><div class="grid">
 <section class="card hero">
-  <div class="left">
-    <h1>Build career-ready skills with short, practical courses</h1>
-    <p>Expert instructors, real projects, and peer feedback — learn on your schedule.</p>
-    <div class="search">
-      <input placeholder="Search courses, e.g. UI/UX, Python, Data Analytics"><button class="btn">Search</button>
-    </div>
-    <div style="margin-top:16px"><a class="btn" href="courses.html">Browse Courses</a> <a class="btn secondary" href="signup.html">Get Started</a></div>
-    <div style="margin-top:18px;color:var(--muted)">Join 200k+ learners — New courses added weekly</div>
-  </div>
-  <div style="width:520px">
-    <img alt="students learning" style="width:100%;border-radius:12px;box-shadow:0 10px 30px rgba(11,99,214,0.08)" src="https://images.pexels.com/photos/1205651/pexels-photo-1205651.jpeg">
-  </div>
+<div class="left">
+<h1>Build career-ready skills with short, practical courses</h1>
+<p>Expert instructors, real projects, and peer feedback — learn on your schedule.</p>
+<div class="search">
+<input placeholder="Search courses, e.g. UI/UX, Python, Data Analytics"/><button class="btn">Search</button>
+</div>
+<div style="margin-top:16px"><a class="btn" href="courses.html">Browse Courses</a> <a class="btn secondary" href="signup.html">Get Started</a></div>
+<div style="margin-top:18px;color:var(--muted)">Join 200k+ learners — New courses added weekly</div>
+</div>
+<div style="width:520px">
+<img alt="students learning" src="https://images.pexels.com/photos/1205651/pexels-photo-1205651.jpeg" style="width:100%;border-radius:12px;box-shadow:0 10px 30px rgba(11,99,214,0.08)"/>
+</div>
 </section>
-
+<!-- rest of your original content preserved (featured courses, why choose us, etc.) -->
 <section class="card maincol1">
-  <div class="section-title"><span>Featured Courses</span><a href="courses.html" class="small">See all</a></div>
-  <div class="featured">
-    <div class="course-card"><img src="https://images.pexels.com/photos/270366/pexels-photo-270366.jpeg" alt="UI/UX"><div class="course-body"><div class="meta">Design • Beginner</div><div class="course-title">UI / UX Fundamentals</div><div class="small">By Alex Chen • 12 lessons</div></div></div>
-    <div class="course-card"><img src="https://images.pexels.com/photos/11035474/pexels-photo-11035474.jpeg" alt="Python"><div class="course-body"><div class="meta">Development • Beginner</div><div class="course-title">Python for Everybody</div><div class="small">By Priya Singh • 18 lessons</div></div></div>
-    <div class="course-card"><img src="https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg" alt="Data"><div class="course-body"><div class="meta">Data • Intermediate</div><div class="course-title">Data Visualization</div><div class="small">By Dr Kumar • 12 lessons</div></div></div>
-	<div class="course-card"><img src="images/ba.png" alt="Data"><div class="course-body"><div class="meta">Analyst • Beginner</div><div class="course-title">Business Analyst</div><div class="small">By Prof Kumar • 8 lessons</div></div></div>
-  </div>
+<div class="section-title"><span>Featured Courses</span><a class="small" href="courses.html">See all</a></div>
+<div class="featured">
+<div class="course-card"><img alt="UI/UX" src="https://images.pexels.com/photos/270366/pexels-photo-270366.jpeg"/><div class="course-body"><div class="meta">Design • Beginner</div><div class="course-title">UI / UX Fundamentals</div><div class="small">By Alex Chen • 12 lessons</div></div></div>
+<div class="course-card"><img alt="Python" src="https://images.pexels.com/photos/11035474/pexels-photo-11035474.jpeg"/><div class="course-body"><div class="meta">Development • Beginner</div><div class="course-title">Python for Everybody</div><div class="small">By Priya Singh • 18 lessons</div></div></div>
+<div class="course-card"><img alt="Data" src="https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg"/><div class="course-body"><div class="meta">Data • Intermediate</div><div class="course-title">Data Visualization</div><div class="small">By Dr Kumar • 12 lessons</div></div></div>
+<div class="course-card"><img alt="Data" src="images/ba.png"/><div class="course-body"><div class="meta">Analyst • Beginner</div><div class="course-title">Business Analyst</div><div class="small">By Prof Kumar • 8 lessons</div></div></div>
+</div>
 </section>
-
 <section class="card maincol">
-  <div class="section-title"><span>Why learners choose us</span></div>
-  <div style="display:flex;gap:14px;flex-wrap:wrap">
-    <div class="card" style="flex:1;min-width:220px"><strong>Industry projects</strong><div class="small">Work on real-world assignments and build portfolio pieces.</div></div>
-    <div class="card" style="flex:1;min-width:220px"><strong>Expert mentors</strong><div class="small">Get feedback from experienced instructors.</div></div>
-    <div class="card" style="flex:1;min-width:220px"><strong>Verified certificates</strong><div class="small">Shareable certificates recognized by employers.</div></div>
-	<div class="card" style="flex:1;min-width:220px"><strong>Affordable Plans</strong><div class="small">Quality education that fits your budget.</div></div>
-    <div class="card" style="flex:1;min-width:220px"><strong>Flexible Learning</strong><div class="small">Study anytime, anywhere.</div></div>
-    <div class="card" style="flex:1;min-width:220px"><strong>Real-World Skills</strong><div class="small">Practical knowledge for career growth..</div></div>
-	<div class="card" style="flex:1;min-width:220px"><strong>Industry projects</strong><div class="small">Work on real-world assignments and build portfolio pieces.</div></div>
-    <div class="card" style="flex:1;min-width:220px"><strong>Expert-Led Courses</strong><div class="small">Learn from industry professionals..</div></div>
-    <div class="card" style="flex:1;min-width:220px"><strong>Certificates That Matter</strong><div class="small">Boost your resume and confidence..</div></div>
-  </div>
+<div class="section-title"><span>Why learners choose us</span></div>
+<div style="display:flex;gap:14px;flex-wrap:wrap">
+<div class="card" style="flex:1;min-width:220px"><strong>Industry projects</strong><div class="small">Work on real-world assignments and build portfolio pieces.</div></div>
+<div class="card" style="flex:1;min-width:220px"><strong>Expert mentors</strong><div class="small">Get feedback from experienced instructors.</div></div>
+<div class="card" style="flex:1;min-width:220px"><strong>Verified certificates</strong><div class="small">Shareable certificates recognized by employers.</div></div>
+<div class="card" style="flex:1;min-width:220px"><strong>Affordable Plans</strong><div class="small">Quality education that fits your budget.</div></div>
+<div class="card" style="flex:1;min-width:220px"><strong>Flexible Learning</strong><div class="small">Study anytime, anywhere.</div></div>
+<div class="card" style="flex:1;min-width:220px"><strong>Real-World Skills</strong><div class="small">Practical knowledge for career growth..</div></div>
+<div class="card" style="flex:1;min-width:220px"><strong>Industry projects</strong><div class="small">Work on real-world assignments and build portfolio pieces.</div></div>
+<div class="card" style="flex:1;min-width:220px"><strong>Expert-Led Courses</strong><div class="small">Learn from industry professionals..</div></div>
+<div class="card" style="flex:1;min-width:220px"><strong>Certificates That Matter</strong><div class="small">Boost your resume and confidence..</div></div>
+</div>
 </section>
-
 <aside class="card sidebar">
-  <div class="section-title"><span>Top categories</span></div>
-  <div style="display:flex;gap:8px;flex-direction:column">
-    <div class="badge">Design</div><div class="badge">Development</div><div class="badge">Data Science</div><div class="badge">Marketing</div>
-  </div>
-  <div style="margin-top:12px"><img alt="study" src="https://images.pexels.com/photos/3183131/pexels-photo-3183131.jpeg" style="width:100%;border-radius:8px"></div>
+<div class="section-title"><span>Top categories</span></div>
+<div style="display:flex;gap:8px;flex-direction:column">
+<div class="badge">Design</div><div class="badge">Development</div><div class="badge">Data Science</div><div class="badge">Marketing</div>
+</div>
+<div style="margin-top:12px"><img alt="study" src="https://images.pexels.com/photos/3183131/pexels-photo-3183131.jpeg" style="width:100%;border-radius:8px"/></div>
 </aside>
-
 <section class="card maincol1">
-  <div class="section-title"><span>Student stories</span></div>
-  <div style="display:flex;gap:12px;flex-direction:column">
-    <div class="list-item"><div class="avatar">AK</div><div><strong>Ashok Kumar</strong><div class="small">"Completed UI/UX course — landed a design role."</div></div></div>
-    <div class="list-item"><div class="avatar">PS</div><div><strong>Priya S.</strong><div class="small">"Loved the projects and the community feedback."</div></div></div>
-  </div>
+<div class="section-title"><span>Student stories</span></div>
+<div style="display:flex;gap:12px;flex-direction:column">
+<div class="list-item"><div class="avatar">AK</div><div><strong>Ashok Kumar</strong><div class="small">"Completed UI/UX course — landed a design role."</div></div></div>
+<div class="list-item"><div class="avatar">PS</div><div><strong>Priya S.</strong><div class="small">"Loved the projects and the community feedback."</div></div></div>
+</div>
 </section>
+</div></main><footer class="footer">© 2025 E-Learn — Modern learning for everyone</footer>
+<!-- Modal HTML -->
+<div aria-hidden="true" aria-modal="true" class="el-modal-backdrop" id="elModalBackdrop" role="dialog">
+<div class="el-modal" role="document">
+<button aria-label="Close" class="close-x" id="elCloseBtn">×</button>
+<div class="left">
+<h3>Join 200k+ learners</h3>
+<p class="lead">Sign up now and start learning career-ready skills with short, practical courses.</p>
+<!-- Tabs for Login / Subscribe -->
+<div style="display:flex;gap:8px;margin-bottom:8px">
+<button class="el-btn" id="tabLoginBtn" style="padding:8px 10px;font-size:14px">Login</button>
+<button class="el-btn secondary" id="tabSubscribeBtn" style="padding:8px 10px;font-size:14px">Subscribe</button>
+</div>
+<!-- Login form -->
+<form class="el-formsmall" id="elLoginForm" novalidate="">
+<label class="el-small">Email</label>
+<input id="loginEmail" placeholder="you@domain.com" required="" type="email"/>
+<div aria-live="polite" class="el-error" id="loginEmailErr"></div>
+<label class="el-small">Password</label>
+<input id="loginPassword" placeholder="Enter password" required="" type="password"/>
+<div aria-live="polite" class="el-error" id="loginPasswordErr"></div>
+<div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+<button class="el-btn" type="submit">Sign in</button>
+<button class="el-btn secondary" id="forgotPw" type="button">Forgot?</button>
+</div>
+<div class="el-dontshow">
+<input id="dontShowAgain" type="checkbox"/><label for="dontShowAgain">Don't show this again</label>
+</div>
+</form>
+<!-- Subscribe form (hidden by default) -->
+<form class="el-formsmall" id="elSubscribeForm" novalidate="" style="display:none;margin-top:8px">
+<label class="el-small">Email</label>
+<input id="subscribeEmail" placeholder="your@email.com" required="" type="email"/>
+<div aria-live="polite" class="el-error" id="subscribeEmailErr"></div>
+<button class="el-btn" type="submit">Subscribe &amp; Get 10% Off</button>
+<div class="el-small" style="margin-top:6px">We'll send occasional course updates — unsubscribe anytime.</div>
+</form>
+</div>
+<div class="right">
+<div class="el-right-cta">
+<h2 style="margin:0">Welcome back 👋</h2>
+<p style="margin:6px 0 12px 0;opacity:0.95">Learn in-demand skills — flexible, project-based, and mentor-supported.</p>
+<img alt="study" src="https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg" style="width:86px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.12)"/>
+<div style="margin-top:12px">
+<a class="el-btn secondary" href="signup.html" style="display:inline-block;padding:8px 10px;color:white;">Create account</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Script: modal behavior & validation -->
+<script>
+  (function(){
+    const backdrop = document.getElementById('elModalBackdrop');
+    const closeBtn = document.getElementById('elCloseBtn');
+    const tabLogin = document.getElementById('tabLoginBtn');
+    const tabSubscribe = document.getElementById('tabSubscribeBtn');
+    const loginForm = document.getElementById('elLoginForm');
+    const subscribeForm = document.getElementById('elSubscribeForm');
+    const dontShowCb = document.getElementById('dontShowAgain');
 
-</div></main><footer class="footer">© 2025 E-Learn — Modern learning for everyone</footer></body></html>
+    // input elements & error containers
+    const loginEmail = document.getElementById('loginEmail');
+    const loginPassword = document.getElementById('loginPassword');
+    const loginEmailErr = document.getElementById('loginEmailErr');
+    const loginPasswordErr = document.getElementById('loginPasswordErr');
+
+    const subscribeEmail = document.getElementById('subscribeEmail');
+    const subscribeEmailErr = document.getElementById('subscribeEmailErr');
+
+    // helpers
+    function isValidEmail(v){
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    }
+
+    function showLoginTab(){
+      loginForm.style.display = '';
+      subscribeForm.style.display = 'none';
+    }
+    function showSubscribeTab(){
+      loginForm.style.display = 'none';
+      subscribeForm.style.display = '';
+    }
+
+    // open modal (if user didn't previously opt out)
+    function openModal(){
+      if (localStorage.getItem('el-modal-hide') === '1') return;
+      backdrop.classList.add('show');
+      backdrop.setAttribute('aria-hidden', 'false');
+      // focus first input
+      setTimeout(()=> loginEmail.focus(), 80);
+    }
+
+    // close modal
+    function closeModal(){
+      backdrop.classList.remove('show');
+      backdrop.setAttribute('aria-hidden', 'true');
+      if (dontShowCb.checked) localStorage.setItem('el-modal-hide', '1');
+    }
+
+    // wire buttons
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', function(e){
+      if (e.target === backdrop) closeModal(); // click outside modal to close
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeModal();
+    });
+
+    tabLogin.addEventListener('click', showLoginTab);
+    tabSubscribe.addEventListener('click', showSubscribeTab);
+
+    // login validation & submit handler (demo: prevents default and shows success text)
+    loginForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      loginEmailErr.textContent = '';
+      loginPasswordErr.textContent = '';
+
+      let ok = true;
+      if (!isValidEmail(loginEmail.value.trim())) {
+        loginEmailErr.textContent = 'Please enter a valid email.';
+        ok = false;
+      }
+      if (loginPassword.value.trim().length < 6) {
+        loginPasswordErr.textContent = 'Password must be at least 6 characters.';
+        ok = false;
+      }
+      if (!ok) return;
+
+      // Demo: you would normally send to server here
+      loginEmail.value = '';
+      loginPassword.value = '';
+      alert('Signed in — demo only. Replace with your auth endpoint.');
+      closeModal();
+    });
+
+    // subscribe validation
+    subscribeForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      subscribeEmailErr.textContent = '';
+      if (!isValidEmail(subscribeEmail.value.trim())) {
+        subscribeEmailErr.textContent = 'Please enter a valid email.';
+        return;
+      }
+
+      // Demo: send to your mailing list endpoint
+      alert('Thanks! You are subscribed — demo only. Hook this to your backend.');
+      subscribeEmail.value = '';
+      closeModal();
+    });
+
+    // simple forgot password action
+    document.getElementById('forgotPw').addEventListener('click', function(){
+      const val = loginEmail.value.trim();
+      if (!isValidEmail(val)) {
+        alert('Enter your email address in the email field so we can send reset instructions.');
+        loginEmail.focus();
+        return;
+      }
+      alert('Password reset link sent to ' + val + ' — demo only.');
+    });
+
+    // show modal after a short delay (or immediately if you prefer)
+    window.addEventListener('load', function(){
+      // Show after 2s to avoid interrupting the immediate page load
+      setTimeout(openModal, 2000);
+    });
+
+    // optional trigger: add a small floating button to open modal
+    const floatBtn = document.createElement('button');
+    floatBtn.className = 'el-btn';
+    floatBtn.style.position = 'fixed';
+    floatBtn.style.right = '18px';
+    floatBtn.style.bottom = '18px';
+    floatBtn.style.zIndex = 9998;
+    floatBtn.style.padding = '10px 12px';
+    floatBtn.style.borderRadius = '12px';
+    floatBtn.textContent = 'Login / Subscribe';
+    floatBtn.addEventListener('click', function(){
+      showLoginTab();
+      openModal();
+    });
+    document.body.appendChild(floatBtn);
+  })();
+</script>
+</body>
+</html>
