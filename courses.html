@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Courses — E-Learn</title><link rel="stylesheet" href="style.css"></head><body>
+<header class="header"><div class="brand"><img src="images/logo.png" alt="logo" width="200" height="90"/></div><nav><a href="index.html">Home</a><a href="courses.html">Courses</a><a href="dashboard.html">My Space</a><a href="forum.html">Forum</a><a href="support.html">Support</a></nav></header>
+<main class="container"><div class="grid">
+  <section class="card maincol">
+    <div class="section-title"><span>All Courses</span><a href="#" class="small">Sort by newest</a></div>
+    <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+      <input style="flex:1" placeholder="Search courses by title or keyword">
+      <select style="width:160px"><option>All levels</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select>
+      <select style="width:140px"><option>All categories</option><option>Design</option><option>Dev</option><option>Data</option></select>
+      <button class="btn">Apply</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px">
+      <div class="course-card"><a href="course-detail.html"><img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg" alt="course"><div class="course-body"><div class="meta">Design • Beginner • Free</div><div class="course-title">Intro to UI Design</div><div class="small">By Alex • 9 lessons • Rating: ★★★★☆</div></div></a></div>
+      <div class="course-card"><a href="course-detail.html"><img src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg" alt="course"><div class="course-body"><div class="meta">Dev • Intermediate • Paid</div><div class="course-title">React Essentials</div><div class="small">By Sam • 14 lessons • Rating: ★★★★☆</div></div></a></div>
+      <div class="course-card"><a href="course-detail.html"><img src="https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg" alt="course"><div class="course-body"><div class="meta">Data • Advanced • Paid</div><div class="course-title">Data Visualization</div><div class="small">By Meera • 12 lessons • Rating: ★★★★★</div></div></a></div>
+      <div class="course-card"><a href="course-detail.html"><img src="https://images.pexels.com/photos/669619/pexels-photo-669619.jpeg" alt="course"><div class="course-body"><div class="meta">Business • Intermediate • Paid</div><div class="course-title">Product Management</div><div class="small">By Raj • 10 lessons • Rating: ★★★★☆</div></div></a></div>
+    </div>
+  </section>
+
+  <aside class="card sidebar">
+    <div class="section-title"><span>Top Instructors</span></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;gap:10px;align-items:center"><a href="instructor.html"><img src="https://images.pexels.com/photos/34221176/pexels-photo-34221176.jpeg" style="width:64px;height:48px;object-fit:cover;border-radius:8px"><div><strong>Alex Chen</strong><div class="small">Design</div></div></a></div>
+      <div style="display:flex;gap:10px;align-items:center"><a href="instructor.html"><img src="https://images.pexels.com/photos/34221314/pexels-photo-34221314.png" style="width:64px;height:48px;object-fit:cover;border-radius:8px"><div><strong>Sam Johnson</strong><div class="small">Development</div></div></a></div>
+    </div>
+    <div style="margin-top:12px"><a class="btn" href="signup.html">Start Learning</a></div>
+  </aside>
+</div></main><footer class="footer">© 2025 E-Learn</footer></body></html>
